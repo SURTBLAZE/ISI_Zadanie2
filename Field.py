@@ -74,7 +74,7 @@ class Field:
             else:
                 return inversions % 2 == 0  # Розв'язне, якщо кількість інверсій парна
 
-    def generate_moves(self):
+    def generate_moves(self) ->  list:
         # Генерує всі можливі ходи для поточного стану поля
         for i in range(self.size):
             for j in range(self.size):
@@ -110,3 +110,6 @@ class Field:
                 new_fields.append(new_field_obj)
 
         return new_fields  # Повертає список нових станів поля
+
+    def get_tuple(self) -> tuple:
+        return tuple(tuple(row) for row in self.field)
