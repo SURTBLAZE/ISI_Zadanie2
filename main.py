@@ -2,6 +2,7 @@ import time
 
 from AIPlayer import AIPlayer
 from Field import Field
+from GUI import GUI
 
 
 def main():
@@ -33,33 +34,36 @@ def main():
     ])  # Поле 4x4, нерозв'язне через неправильну кількість інверсій
 
     # Виводимо поле
-    field1.display()
+    # field1.display()
+    #
+    # player = AIPlayer(field1)
+    #
+    # dfs_start_time = time.time()
+    # dfs_field = player.run_dfs()
+    # dfs_end_time = time.time()
+    #
+    # AIPlayer.print_path(dfs_field)
+    #
+    #
+    # astar_start_time = time.time()
+    # astar_field = player.run_astar()
+    # astar_end_time = time.time()
+    #
+    # AIPlayer.print_path(astar_field)
+    #
+    #
+    # greedy_start_time = time.time()
+    # greedy_field = player.run_greedy()
+    # greedy_end_time = time.time()
+    #
+    # AIPlayer.print_path(greedy_field)
+    #
+    # print(f"dfs: {dfs_end_time - dfs_start_time:.8f} sec")
+    # print(f"astar: {astar_end_time - astar_start_time:.8f} sec")
+    # print(f"greedy: {greedy_end_time - greedy_start_time:.8f} sec")
 
-    player = AIPlayer(field1)
-
-    dfs_start_time = time.time()
-    dfs_field = player.run_dfs()
-    dfs_end_time = time.time()
-
-    AIPlayer.print_path(dfs_field)
-
-
-    astar_start_time = time.time()
-    astar_field = player.run_astar()
-    astar_end_time = time.time()
-
-    AIPlayer.print_path(astar_field)
-
-
-    greedy_start_time = time.time()
-    greedy_field = player.run_greedy()
-    greedy_end_time = time.time()
-
-    AIPlayer.print_path(greedy_field)
-
-    print(f"dfs: {dfs_end_time - dfs_start_time:.8f} sec")
-    print(f"astar: {astar_end_time - astar_start_time:.8f} sec")
-    print(f"greedy: {greedy_end_time - greedy_start_time:.8f} sec")
+    new_gui = GUI(field1)
+    new_gui.run()
 
 
 if __name__ == '__main__':

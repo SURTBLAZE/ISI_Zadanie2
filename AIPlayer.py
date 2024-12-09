@@ -37,3 +37,14 @@ class AIPlayer:
         for step, current_field in enumerate(path):
             print(f"Step {step}:")
             current_field.display()
+
+    @staticmethod
+    def get_path(field: Field):
+        path = []
+
+        while field is not None:
+            path.append(field)
+            field = field.get_last_field()
+
+        path.reverse()
+        return path
