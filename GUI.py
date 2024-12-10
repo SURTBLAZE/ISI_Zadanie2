@@ -14,11 +14,9 @@ class GUI:
         root = tk.Tk()
         root.title("Lloydova 8-ička (15-tka)")
 
-        # Поле для отображения состояния
         canvas = tk.Canvas(root, width=300, height=300, bg="white")
         canvas.pack(pady=10)
 
-        # Кнопки для выбора алгоритма
         button_frame = tk.Frame(root)
         button_frame.pack(pady=10)
 
@@ -28,7 +26,6 @@ class GUI:
                                                                                                             column=2,
                                                                                                             padx=5)
 
-        # Начальное отображение
         self.draw_grid(canvas, self.field.get_field())
 
         root.mainloop()
@@ -38,7 +35,7 @@ class GUI:
         rows, cols = len(state), len(state[0])
         cell_size = 100
 
-        # Изменяем размер Canvas в зависимости от размера поля
+
         canvas.config(width=cols * cell_size, height=rows * cell_size)
 
         for i in range(rows):
@@ -46,7 +43,7 @@ class GUI:
                 x1, y1 = j * cell_size, i * cell_size
                 x2, y2 = x1 + cell_size, y1 + cell_size
                 value = state[i][j]
-                if value != 0:  # 0 — пустая клетка
+                if value != 0:
                     canvas.create_rectangle(x1, y1, x2, y2, fill="lightblue", outline="black")
                     canvas.create_text((x1 + x2) // 2, (y1 + y2) // 2, text=str(value), font=("Arial", 24))
 
@@ -57,19 +54,19 @@ class GUI:
             return
 
         moves = len(path)
-        speed = max(1, moves // 10)  # Рассчитываем скорость: минимум 1 ход в секунду
+        speed = max(1, moves // 10)
         self.animate_solution(canvas, path, speed)
 
     def animate_solution(self, canvas, path, speed):
         for state in path:
             self.draw_grid(canvas, state.get_field())
             canvas.update()
-            time.sleep(1 / speed)  # Скорость обновления
+            time.sleep(1 / speed)
 
     def solve_puzzle(self, method):
         if method == "DFS":
             dfs_field = self.player.run_dfs()
-            return AIPlayer.get_path(dfs_field)  # Замените на ваш алгоритм DFS
+            return AIPlayer.get_path(dfs_field)
         elif method == "Astar":
             dfs_field = self.player.run_astar()
             return AIPlayer.get_path(dfs_field)
