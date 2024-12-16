@@ -3,13 +3,14 @@ import tkinter as tk
 from tkinter import messagebox
 
 from AIPlayer import AIPlayer
-from Field import Field
+from Level import Level
+from MenuGUI import MenuGUI
 
 
 class GUI:
-    def __init__(self, field: Field):
-        self.field = field
-        self.player = AIPlayer(field)
+    def __init__(self):
+        self.field = []
+        self.player = None
         self.is_stopped = False
         self.is_algorithm_running = False
 
@@ -17,6 +18,13 @@ class GUI:
         root = tk.Tk()
         root.title("Lloydova 8-ička (15-tka)")
 
+        self.menu(root)
+
+        self.run_game_ui(root)
+
+        root.mainloop()
+
+    def run_game_ui(self, root):
         frame = tk.Frame(root)
         frame.pack(padx=30, pady=(30, 40))
 
@@ -27,32 +35,57 @@ class GUI:
         button_frame.pack(pady=(0, 30))
 
         button_frame.grid_columnconfigure(2, minsize=50)
+        button_frame.grid_rowconfigure(1, minsize=50)
 
-        (tk.Button(button_frame,
-                   text="Reset", bg="green", fg="white", padx=7, pady=3,
-                   command=lambda: self.reset_grid(canvas))
-         .grid(row=0, column=0, padx=5))
+        tk.Button(button_frame,
+            text="Reset", bg="green", fg="white", padx=7, pady=3,
+            command=lambda: self.reset_grid(canvas)
+        ).grid(row=0, column=0, padx=5)
 
-        (tk.Button(button_frame,
-                   text="Stop", bg="red", fg="white", padx=7, pady=3,
-                   command=lambda: self.stop_algorithm())
-         .grid(row=0, column=1, padx=5))
+        tk.Button(button_frame,
+            text="Stop", bg="red", fg="white", padx=7, pady=3,
+            command=lambda: self.stop_algorithm()
+        ).grid(row=0, column=1, padx=5)
 
-        (tk.Button(button_frame, text="DFS", padx=7, pady=3, bg="#CBCBCB",
-                   command=lambda: self.on_solve("DFS", canvas))
-         .grid(row=0, column=3, padx=5))
+        tk.Button(button_frame,
+            text="DFS", padx=7, pady=3, bg="#CBCBCB",
+            command=lambda: self.on_solve("DFS", canvas)
+        ).grid(row=0, column=3, padx=5)
 
-        (tk.Button(button_frame, text="Astar", padx=7, pady=3, bg="#CBCBCB",
-                   command=lambda: self.on_solve("Astar", canvas))
-         .grid(row=0, column=4, padx=5))
+        tk.Button(button_frame,
+            text="Astar", padx=7, pady=3, bg="#CBCBCB",
+            command=lambda: self.on_solve("Astar", canvas)
+        ).grid(row=0, column=4, padx=5)
 
-        (tk.Button(button_frame, text="GreedySearch", padx=7, pady=3, bg="#CBCBCB",
-                   command=lambda: self.on_solve("GreedySearch", canvas))
-         .grid(row=0, column=5, padx=5))
+        tk.Button(button_frame,
+            text="GreedySearch", padx=7, pady=3, bg="#CBCBCB",
+            command=lambda: self.on_solve("GreedySearch", canvas)
+        ).grid(row=0, column=5, padx=5)
+
+        tk.Button(button_frame,
+            text="Back to menu", padx=20, pady=3, bg="#CBCBCB",
+            command=lambda: self.back_to_menu(root)
+        ).grid(row=2, column=0, columnspan=8)
 
         self.draw_grid(canvas, self.field.get_field())
 
-        root.mainloop()
+    def menu(self, root):
+        menu = MenuGUI()
+        menu.run_menu(root)
+
+        self.field = Level.levels[menu.selected_level.get() - 1]
+        self.player = AIPlayer(self.field)
+
+    def back_to_menu(self, root):
+        self.clear_window(root)
+
+        self.menu(root)
+
+        self.run_game_ui(root)
+
+    def clear_window(self, root):
+        for widget in root.winfo_children():
+            widget.destroy()
 
     def stop_algorithm(self):
         if self.is_algorithm_running:
